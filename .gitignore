@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Env files
+.env
+client/.env
+server/.env
+
+# Logs
+*.log
+
+# Build folders
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vite/Next/React build
+client/.next/
+client/build/
+client/dist/
+
+# Server build (if using TypeScript or bundling)
+server/dist/
+server/build/

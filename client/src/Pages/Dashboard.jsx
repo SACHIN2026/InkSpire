@@ -1,35 +1,58 @@
-import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [message, setMessage] = useState('Loading...');
-  const navigate = useNavigate();
+  const [userBlogs, setUserBlogs] = useState([]);
+  const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const fetchDashboard = async () => {
+    const fetchUserBlogs = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('/dashboard', {
+        const res = await axios.get('/blogs', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setMessage(res.data.message);
+        // Retrieve the user info from localStorage,
+        // assuming it was stored there after login/register.
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        // Filter blogs of the logged in user
+        const myBlogs = res.data.blogs.filter((blog) =>
+          blog.author._id === storedUser?._id
+        );
+        setUserBlogs(myBlogs);
       } catch (error) {
-        console.error('Dashboard error:', error.response?.data || error.message);
-        setMessage('Error fetching data or unauthorized');
-        navigate('/login');
+        console.error("Error fetching user blogs:", error.response?.data || error.message);
       }
     };
 
-    fetchDashboard();
-  }, [navigate]);
+    if (token) {
+      fetchUserBlogs();
+    }
+  }, [token]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-secondary">
-      <h2 className="text-3xl font-bold mb-4 text-primary">Dashboard</h2>
-      <p className="text-lg text-neutral">{message}</p>
+    <div>
+      <h1 className='text-3xl font-bold mb-4'>My Dashboard</h1>
+      <div className='flex justify-end mb-4'>
+        <Link to="/editor" className='btn btn-primary'>
+          Create New Blog
+        </Link>
+      </div>
+      {userBlogs.length === 0 ? (
+        <p>No blogs published.</p>
+      ) : (
+        <ul>
+          {userBlogs.map((blog) => (
+            <li key={blog._id} className='border p-4 mb-2'>
+              <h2 className='text-2xl'>{blog.title}</h2>
+              <p>{blog.content.substring(0, 100)}...</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

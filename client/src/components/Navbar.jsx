@@ -1,7 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../redux/authSlice';
 
 const Navbar = () => {
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <nav className="navbar bg-primary text-primary-content p-4">
       <div className="flex-1 flex items-center">
@@ -18,10 +28,24 @@ const Navbar = () => {
       <div className="flex-none">
         <ul className="menu menu-horizontal p-0">
           <li><Link to="/">Home</Link></li>
+          <li><Link to="/blogs">Blogs</Link></li>
           <li><Link to="/editor">Write Post</Link></li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/register">Register</Link></li>
+          {!isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <button onClick={handleLogout} className="hover:underline">
+                Logout
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

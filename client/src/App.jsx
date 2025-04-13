@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
+import Home from "./pages/Home.jsx";
 import Blogs from "./pages/Blogs";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";

@@ -1,11 +1,18 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './Pages/Home';
-import Login from './Pages/Login';
-import Register from './Pages/Register';
-import Dashboard from './Pages/Dashboard';
-import BlogEditor from './components/BlogEditor';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Blogs from "./pages/Blogs";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import BlogEditor from "./components/BlogEditor";
+
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
 
 function App() {
   return (
@@ -13,11 +20,31 @@ function App() {
       <Navbar />
       <div className="container mx-auto py-8">
         <Routes>
+          {/* Public pages */}
           <Route path="/" element={<Home />} />
+          <Route path="/blogs" element={<Blogs />} />
+          {/* Auth pages */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path= "/editor" element={<BlogEditor />} />
+          {/* Protected route */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/editor"
+            element={
+              <ProtectedRoute>
+                <BlogEditor />
+              </ProtectedRoute>
+            }
+          />
+          {/* Redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
     </div>

@@ -10,6 +10,7 @@ export const createBlog = async (req , res ) => {
             content,
             tags,
             author : req.user._id,
+            published: true, // Set published to true by default
         });
         res.status(201).json({blog});
 

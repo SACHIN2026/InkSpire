@@ -29,7 +29,7 @@ const Navbar = () => {
         <ul className="menu menu-horizontal p-0">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/blogs">Blogs</Link></li>
-          <li><Link to="/editor">Write Post</Link></li>
+          {/* <li><Link to="/editor">Write Post</Link></li> */}
           {!isAuthenticated ? (
             <>
               <li>

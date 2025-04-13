@@ -52,7 +52,7 @@ const BlogEditor = () => {
 
         try {
             const token = localStorage.getItem("token");
-            const res = axios.post("/api/blogs", blogData, {
+            const res = axios.post("/blogs", blogData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -67,7 +67,7 @@ export const deleteBlog = async (req, res) =>{
         // if(blog.author.toString() !== req.user._id.toString()){
         //     return res.status(401).json({message : "You are not authorized to delete this blog"});
         // }
-        await blog.remove();
+        await blog.deleteOne();
         res.status(200).json({message : "Blog deleted successfully"});
 
     } catch (error) {

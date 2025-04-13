@@ -3,11 +3,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import Home from "./Pages/Home";
-import Blogs from "./pages/Blogs";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Blogs from "./Pages/Blogs";
+import Dashboard from "./Pages/Dashboard";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 import BlogEditor from "./components/BlogEditor";
+//corret
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useSelector((state) => state.auth);

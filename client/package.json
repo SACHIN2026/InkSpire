@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",
+    "@tiptap/react": "^2.11.7",
+    "@tiptap/starter-kit": "^2.11.7",
     "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

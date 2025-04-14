@@ -38,6 +38,9 @@ const Navbar = () => {
               <li>
                 <Link to="/register">Register</Link>
               </li>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
             </>
           ) : (
             <li>
@@ -45,6 +48,7 @@ const Navbar = () => {
                 Logout
               </button>
             </li>
+            
           )}
         </ul>
       </div>

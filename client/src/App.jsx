@@ -8,6 +8,7 @@ import Dashboard from "./Pages/Dashboard";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import BlogEditor from "./components/BlogEditor";
+import BlogDetails from "./Pages/BlogDetails";
 //corret
 
 function ProtectedRoute({ children }) {
@@ -24,6 +25,7 @@ function App() {
           {/* Public pages */}
           <Route path="/" element={<Home />} />
           <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
           {/* Auth pages */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

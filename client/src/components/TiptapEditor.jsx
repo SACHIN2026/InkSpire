@@ -1,14 +1,23 @@
 import React, { useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit';
-const TiptapEditor = ({value, onchange = () => {}}) => {
+import Underline from '@tiptap/extension-underline';
+import Link from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
+import MenuBar from './MenuBar';
+const TiptapEditor = ({value, onChange = () => {}}) => {
     const editor = useEditor({
         extensions: [
             StarterKit,
+            Underline,
+            Link.configure({
+                openOnClick: false,
+            }),
+            Image,
         ],
         content: value,
         onUpdate({editor}){
-            onchange(editor.getHTML())
+            onChange(editor.getHTML())
         },
     });
 
@@ -25,7 +34,12 @@ const TiptapEditor = ({value, onchange = () => {}}) => {
 
 
 
-  return <EditorContent editor={editor} className="border border-gray-300 rounded-md p-4 mb-4" />
+  return (
+      <div>
+          <MenuBar editor={editor} />
+          <EditorContent editor={editor} className="border border-gray-300 rounded-md p-4 mb-4" />
+      </div>
+  )
   
 }
 

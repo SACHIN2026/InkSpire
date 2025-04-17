@@ -71,18 +71,48 @@ const BlogEditor = () => {
         />
         <Editor
           apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
-          initialValue=""
+          initialValue={content}
           init={{
             height: 500,
             menubar: false,
             plugins: [
-              "advlist autolink lists link image charmap print preview anchor",
-              "searchreplace visualblocks code fullscreen",
-              "insertdatetime media table paste code help wordcount",
-            ],
+                'advlist', 'autolink', 'lists', 'link', 'image',
+                'charmap', 'print', 'preview', 'anchor',
+                'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'paste', 'help', 'wordcount'
+              ],
             toolbar:
               "undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code | help",
             content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
+            file_picker_types: 'image',
+            file_picker_callback: function(callback, value, meta){
+                if(meta.filetype == 'image'){
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.onchange = async function () {
+                        const file = this.files[0];
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        try {
+                            const res = await axios.post('/upload', formData, {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                },
+                            });
+
+                            // const data = await res.json();
+                            //to tinyMCE
+                            callback(res.data.imageUrl, {alt: file.name});
+
+                        } catch (error) {
+                            console.error('Error uploading image:', error);
+                            alert('Failed to upload image. Please try again.');
+                        }
+                    };
+                    input.click(); 
+                }
+            }
           }}
           onEditorChange={handleEditorChange}
         />

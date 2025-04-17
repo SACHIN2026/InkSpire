@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import { useNotification } from "../context/NotificationContext";
 
 const BlogEditor = () => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
+    const { showNotification } = useNotification();
 
   const handleEditorChange = (newContent) => {
     setContent(newContent);
@@ -20,6 +22,7 @@ const BlogEditor = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       // Not logged in—redirect to login page
+      showNotification("error", "You must be logged in to create a blog.");
       return navigate("/login");
     }
 
@@ -35,11 +38,15 @@ const BlogEditor = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Blog successfully submitted:", res.data);
+        // Show success notification
+        showNotification("success", "Blog submitted successfully!");
+    //   console.log("Blog successfully submitted:", res.data);
 
       // Navigate to the new blog's details page
       navigate(`/blogs/${res.data.blog._id}`);
     } catch (error) {
+        // Show error notification
+        showNotification("error", "Failed to submit blog. Please try again.");
       console.error("Error submitting blog:", error.response?.data || error.message);
         // Handle error (e.g., show a notification or alert)
         alert("Failed to submit blog. Please try again.");

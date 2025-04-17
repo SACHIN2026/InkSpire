@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../redux/authSlice';
+import { useNotification } from '../context/NotificationContext';
 
 const Login = () => {
+  const { showNotification } = useNotification();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,12 +19,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post('/auth/login', formData);
+      showNotification("success", "Logged in Successfully!");
       // Assume response contains: { token, user }
       dispatch(setCredentials(res.data));
       localStorage.setItem('token', res.data.token);
       navigate('/dashboard');
     } catch (error) {
-      console.error('Login error:', error.response?.data || error.message);
+      showNotification("error", error.response?.data?.message || "Login failed. Please try again.");
     }
   };
 

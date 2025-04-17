@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../redux/authSlice';
+import { useNotification } from '../context/NotificationContext';
+
 
 const Register = () => {
+  const { showNotification } = useNotification();
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,11 +20,14 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post('/auth/register', formData);
+      showNotification("success", "Registered Successfully! Redirecting to Dashboard...");
       // Assume response contains: { token, user }
+      console.log(res.data);
       dispatch(setCredentials(res.data));
       localStorage.setItem('token', res.data.token);
       navigate('/dashboard');
     } catch (error) {
+      showNotification("error", "Registration failed. Please try again." || error.response?.data?.message);
       console.error('Register error:', error.response?.data || error.message);
     }
   };

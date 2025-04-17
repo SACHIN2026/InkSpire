@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import blogRoutes from './routes/blogRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', dashboardRoutes);
 app.use('/api/blogs', blogRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/', (req, res) =>{
     res.send("Hello from server")

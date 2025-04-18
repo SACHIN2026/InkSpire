@@ -3,6 +3,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { useNotification } from "../context/NotificationContext";
+import { suggestTitle, summarizeBlog, generateOutline } from "../api/ai";
 
 const BlogEditor = () => {
   const [content, setContent] = useState("");
@@ -10,6 +11,48 @@ const BlogEditor = () => {
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
     const { showNotification } = useNotification();
+    const token = localStorage.getItem("token");
+
+    const handleSuggestTitile = async () =>{
+        try {
+            const {data} = await suggestTitle(content, token);
+            if(data?.title){
+                setTitle(data.title);
+                showNotification("success", "Title suggested successfully!");
+            }
+            
+        } catch (error) {
+            console.error("Error suggesting title:", error);
+            showNotification("error", "Failed to suggest title. Please try again.");
+            
+        }
+    };
+
+  const handleSummarizeBlog = async () => {
+    try {
+      const {data} = await summarizeBlog(content, token);
+      if(data?.summary){
+        setContent(data.summary);
+        showNotification("success", "Blog summarized successfully!");
+      }
+    } catch (error) {
+      console.error("Error summarizing blog:", error);
+      showNotification("error", "Failed to summarize blog. Please try again.");
+    }
+    }
+
+  const handleGenerateOutline = async () => {
+    try {
+      const {data} = await generateOutline(content, token);
+      if(data?.outline){
+        setContent(data.outline);
+        showNotification("success", "Outline generated successfully!");
+      }
+    } catch (error) {
+      console.error("Error generating outline:", error);
+      showNotification("error", "Failed to generate outline. Please try again.");
+    }
+    }
 
   const handleEditorChange = (newContent) => {
     setContent(newContent);
@@ -128,6 +171,27 @@ const BlogEditor = () => {
           className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-blue-700"
         >
           Submit Blog
+        </button>
+        <button
+          type="button"
+          onClick={handleSuggestTitile}
+          className="mt-4 ml-4 bg-secondary text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          Suggest Title
+        </button>
+        <button
+          type="button"
+          onClick={handleSummarizeBlog}
+          className="mt-4 ml-4 bg-secondary text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          Summarize Blog
+        </button>
+        <button
+          type="button"
+          onClick={handleGenerateOutline}
+          className="mt-4 ml-4 bg-secondary text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          Generate Outline
         </button>
       </form>
     </div>

@@ -1,15 +1,26 @@
-import express from 'express';
-import { protect } from '../middlewares/authMiddleware.js';
-import { createBlog, updateBlog, deleteBlog, getAllBlogs, getBlogById } from '../controllers/blogController.js';
+import express from "express"
+import { protect } from "../middlewares/authMiddleware.js"
+import {
+    createBlog,
+    updateBlog,
+    deleteBlog,
+    getAllBlogs,
+    getBlogById,
+    likeBlog,
+    checkLikeStatus,
+} from "../controllers/blogController.js"
 
-const router = express.Router();
+const router = express.Router()
 
-// Create a new blog post
-router.post('/', protect, createBlog);
-router.get('/:id', getBlogById);
-router.get('/', getAllBlogs);
-router.put('/:id', protect, updateBlog);
-router.delete('/:id', protect, deleteBlog);
+// Blog CRUD operations
+router.post("/", protect, createBlog)
+router.get("/", getAllBlogs)
+router.get("/:id", getBlogById)
+router.put("/:id", protect, updateBlog)
+router.delete("/:id", protect, deleteBlog)
 
-export default router;
+// Like/unlike operations
+router.post("/:id/like", protect, likeBlog)
+router.get("/:id/like", protect, checkLikeStatus)
 
+export default router

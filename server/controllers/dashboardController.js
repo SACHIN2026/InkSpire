@@ -1,5 +1,5 @@
 import Blog from "../models/Blog.js"
-import Bookmark from "../models/Bookmark.js"
+import Bookmark from "../models/bookmark.js"
 import mongoose from "mongoose"
 
 export const getDashboardStats = async (req, res) => {

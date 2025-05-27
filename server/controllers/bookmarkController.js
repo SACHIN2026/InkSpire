@@ -1,4 +1,4 @@
-import Bookmark from "../models/Bookmark.js"
+import Bookmark from "../models/bookmark.js"
 import Blog from "../models/Blog.js"
 
 // Bookmark a blog

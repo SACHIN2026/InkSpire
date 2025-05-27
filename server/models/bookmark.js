@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const bookmarkSchema = new mongoose.Schema(
   {
@@ -14,10 +14,13 @@ const bookmarkSchema = new mongoose.Schema(
     },
   },
   { timestamps: true },
-)
+);
 
 // Compound index to ensure a user can bookmark a blog only once
-bookmarkSchema.index({ user: 1, blog: 1 }, { unique: true })
+bookmarkSchema.index({ user: 1, blog: 1 }, { unique: true });
 
-const Bookmark = mongoose.model("Bookmark", bookmarkSchema)
-export default Bookmark
+//Prevent OverwriteModelError
+const Bookmark =
+  mongoose.models.Bookmark || mongoose.model("Bookmark", bookmarkSchema);
+
+export default Bookmark;

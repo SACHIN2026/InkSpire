@@ -1,12 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer base {
-    h1 {
-      @apply text-primary;
-    }
-    h2 {
-      @apply text-primary;
-    }
+
+:root {
+  --transition-duration: 0.3s;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Theme transition */
+html,
+body,
+.bg-base-100,
+.bg-base-200,
+.bg-base-300,
+.text-base-content,
+.bg-primary,
+.bg-secondary,
+.text-primary,
+.text-secondary,
+.border-base-300,
+.border-primary,
+.border-secondary {
+  transition:
+    background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease,
+    border-color var(--transition-duration) ease,
+    fill var(--transition-duration) ease,
+    stroke var(--transition-duration) ease;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

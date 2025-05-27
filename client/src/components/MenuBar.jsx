@@ -1,89 +1,137 @@
-// src/components/MenuBar.jsx
-import React from 'react'
+"use client"
+import { motion } from "framer-motion"
 
 const MenuBar = ({ editor }) => {
   if (!editor) return null
 
   return (
-    <div className="flex flex-wrap gap-2 mb-2">
-      <button
+    <motion.div
+      className="flex flex-wrap gap-1 mb-3 p-1 bg-base-200 rounded-lg"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <ToolbarButton
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`p-2 border rounded ${editor.isActive('bold') ? 'bg-gray-200' : ''}`}
+        isActive={editor.isActive("bold")}
+        tooltip="Bold"
       >
-        Bold
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`p-2 border rounded ${editor.isActive('italic') ? 'bg-gray-200' : ''}`}
-      >
-        Italic
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`p-2 border rounded ${editor.isActive('underline') ? 'bg-gray-200' : ''}`}
-      >
-        Underline
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={`p-2 border rounded ${editor.isActive('strike') ? 'bg-gray-200' : ''}`}
-      >
-        Strike
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={`p-2 border rounded ${editor.isActive('bulletList') ? 'bg-gray-200' : ''}`}
-      >
-        Bullet List
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={`p-2 border rounded ${editor.isActive('orderedList') ? 'bg-gray-200' : ''}`}
-      >
-        Ordered List
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={`p-2 border rounded ${editor.isActive('blockquote') ? 'bg-gray-200' : ''}`}
-      >
-        Quote
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={`p-2 border rounded ${editor.isActive('codeBlock') ? 'bg-gray-200' : ''}`}
-      >
-        Code Block
-      </button>
-      <button
-        onClick={() => {
-          const url = window.prompt("Enter URL");
-          if (url) {
-            editor.chain().focus().setLink({ href: url }).run();
-          }
-        }}
-        className={`p-2 border rounded ${editor.isActive("link") ? "bg-gray-200" : ""}`}
-      >
-        Link
-      </button>
-      <button
-        onClick={() => editor.chain().focus().unsetLink().run()}
-        className="p-2 border rounded"
-      >
-        Unset Link
-      </button>
-      <button
-        onClick={() => {
-          const url = window.prompt("Enter Image URL");
-          if (url) {
-            editor.chain().focus().setImage({ src: url }).run();
-          }
-        }}
-        className="p-2 border rounded"
-      >
-        Image
-      </button>
-    </div>
-  );
-};
+        <i className="fa-solid fa-bold"></i>
+      </ToolbarButton>
 
-export default MenuBar;
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        isActive={editor.isActive("italic")}
+        tooltip="Italic"
+      >
+        <i className="fa-solid fa-italic"></i>
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        isActive={editor.isActive("underline")}
+        tooltip="Underline"
+      >
+        <i className="fa-solid fa-underline"></i>
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        isActive={editor.isActive("strike")}
+        tooltip="Strikethrough"
+      >
+        <i className="fa-solid fa-strikethrough"></i>
+      </ToolbarButton>
+
+      <ToolbarDivider />
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        isActive={editor.isActive("bulletList")}
+        tooltip="Bullet List"
+      >
+        <i className="fa-solid fa-list-ul"></i>
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        isActive={editor.isActive("orderedList")}
+        tooltip="Ordered List"
+      >
+        <i className="fa-solid fa-list-ol"></i>
+      </ToolbarButton>
+
+      <ToolbarDivider />
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        isActive={editor.isActive("blockquote")}
+        tooltip="Quote"
+      >
+        <i className="fa-solid fa-quote-left"></i>
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        isActive={editor.isActive("codeBlock")}
+        tooltip="Code Block"
+      >
+        <i className="fa-solid fa-code"></i>
+      </ToolbarButton>
+
+      <ToolbarDivider />
+
+      <ToolbarButton
+        onClick={() => {
+          const url = window.prompt("Enter URL")
+          if (url) {
+            editor.chain().focus().setLink({ href: url }).run()
+          }
+        }}
+        isActive={editor.isActive("link")}
+        tooltip="Add Link"
+      >
+        <i className="fa-solid fa-link"></i>
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => editor.chain().focus().unsetLink().run()}
+        tooltip="Remove Link"
+        disabled={!editor.isActive("link")}
+      >
+        <i className="fa-solid fa-link-slash"></i>
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() => {
+          const url = window.prompt("Enter Image URL")
+          if (url) {
+            editor.chain().focus().setImage({ src: url }).run()
+          }
+        }}
+        tooltip="Insert Image"
+      >
+        <i className="fa-solid fa-image"></i>
+      </ToolbarButton>
+    </motion.div>
+  )
+}
+
+// Toolbar button component
+const ToolbarButton = ({ children, onClick, isActive, tooltip, disabled = false }) => (
+  <motion.button
+    onClick={onClick}
+    className={`btn btn-sm ${isActive ? "btn-primary" : "btn-ghost"} ${disabled ? "btn-disabled" : ""}`}
+    whileHover={!disabled ? { scale: 1.05 } : {}}
+    whileTap={!disabled ? { scale: 0.95 } : {}}
+    title={tooltip}
+    disabled={disabled}
+  >
+    {children}
+  </motion.button>
+)
+
+// Toolbar divider component
+const ToolbarDivider = () => <div className="w-px h-6 bg-base-300 mx-1" />
+
+export default MenuBar

@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { logout } from "../redux/authSlice"
-import { useTheme } from "../context/ThemeContext"
 import { motion } from "framer-motion"
 import { useState } from "react"
 
@@ -10,7 +9,6 @@ const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { theme, toggle } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleLogout = () => {
@@ -79,14 +77,6 @@ const Navbar = () => {
                 </button>
               </>
             )}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={toggle}
-              className="btn btn-sm btn-circle btn-ghost"
-              aria-label={theme === "mytheme" ? "Switch to dark mode" : "Switch to light mode"}
-            >
-              {theme === "mytheme" ? <i className="fa-solid fa-moon"></i> : <i className="fa-solid fa-sun"></i>}
-            </motion.button>
           </motion.div>
 
           {/* Mobile menu button */}
@@ -143,16 +133,6 @@ const Navbar = () => {
                   </button>
                 </>
               )}
-              <div className="flex items-center justify-between px-4 py-2">
-                <span>Theme</span>
-                <button
-                  onClick={toggle}
-                  className="btn btn-sm btn-circle btn-ghost"
-                  aria-label={theme === "mytheme" ? "Switch to dark mode" : "Switch to light mode"}
-                >
-                  {theme === "mytheme" ? <i className="fa-solid fa-moon"></i> : <i className="fa-solid fa-sun"></i>}
-                </button>
-              </div>
             </div>
           )}
         </motion.div>

@@ -108,4 +108,3 @@ InkSpire/
 
 The application is live at: [InkSpire](https://ink-spire-lac.vercel.app/)
 
-```
